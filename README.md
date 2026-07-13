@@ -83,3 +83,4 @@ Open **[http://127.0.0.1:5000](http://127.0.0.1:5000)** in your browser.
 
 ## Conclusion
 The Human Development Index Predictor demonstrates the power of combining data preprocessing, machine learning algorithms, and interactive web frameworks. By utilizing Linear Regression, the application achieves an $R^2$ score of **`0.9906`**, providing highly accurate predictions that help researchers and policymakers analyze development gaps and target interventions.
+# hdi_project
