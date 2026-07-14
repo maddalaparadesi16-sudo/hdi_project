@@ -3,19 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Predict Country Human Development Index (HDI) scores using Machine Learning. Explore interactive socioeconomic indicators, GNI, life expectancy, and education visualizations.">
+    <meta name="description" content="Predict Country Human Development Index (HDI) scores using Machine Learning.">
     <title>Human Development Index (HDI) Predictor Dashboard</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <!-- Background Glow Blobs -->
     <div class="glow-blob blob-1"></div>
     <div class="glow-blob blob-2"></div>
     <div class="glow-blob blob-3"></div>
@@ -75,7 +74,7 @@
                             <form id="hdi-predict-form" onsubmit="handlePrediction(event)">
                                 <div class="form-group">
                                     <label for="life_expectancy">
-                                        <span><i class="fa-solid fa-heart-pulse"></i> Life Expectancy at Birth (years)</span>
+                                        <span><i class="fa-solid fa-heart-pulse"></i> Life Expectancy (years)</span>
                                         <span class="range-info">Range: 20 - 100</span>
                                     </label>
                                     <input type="number" id="life_expectancy" name="life_expectancy" min="20" max="100" step="0.1" value="72.5" required>
@@ -86,7 +85,7 @@
 
                                 <div class="form-group">
                                     <label for="expected_schooling">
-                                        <span><i class="fa-solid fa-graduation-cap"></i> Expected Years of Schooling (years)</span>
+                                        <span><i class="fa-solid fa-graduation-cap"></i> Expected Schooling (years)</span>
                                         <span class="range-info">Range: 0 - 30</span>
                                     </label>
                                     <input type="number" id="expected_schooling" name="expected_schooling" min="0" max="30" step="0.1" value="13.2" required>
@@ -97,7 +96,7 @@
 
                                 <div class="form-group">
                                     <label for="mean_schooling">
-                                        <span><i class="fa-solid fa-book-open"></i> Mean Years of Schooling (years)</span>
+                                        <span><i class="fa-solid fa-book-open"></i> Mean Schooling (years)</span>
                                         <span class="range-info">Range: 0 - 25</span>
                                     </label>
                                     <input type="number" id="mean_schooling" name="mean_schooling" min="0" max="25" step="0.1" value="8.5" required>
@@ -108,7 +107,7 @@
 
                                 <div class="form-group">
                                     <label for="gni_per_capita">
-                                        <span><i class="fa-solid fa-money-bill-trend-up"></i> Gross National Income (GNI) per Capita (PPP $)</span>
+                                        <span><i class="fa-solid fa-money-bill-trend-up"></i> GNI per Capita (PPP $)</span>
                                         <span class="range-info">Range: $100 - $200,000</span>
                                     </label>
                                     <input type="number" id="gni_per_capita" name="gni_per_capita" min="100" max="200000" step="1" value="12500" required>
@@ -124,22 +123,21 @@
                             </form>
                         </div>
 
-                        <!-- Results Panel (Always visible, changes states dynamically) -->
+                        <!-- Results Panel -->
                         <div class="glass-card result-card">
                             <h2 class="card-title"><i class="fa-solid fa-square-poll-vertical icon-accent"></i> Prediction Output</h2>
                             
                             <!-- Initial State -->
                             <div id="result-initial" class="result-placeholder">
                                 <div class="placeholder-animation">
-                                    <i class="fa-solid fa-earth-asia globe-spin"></i>
+                                    <i class="fa-solid fa-earth-asia globe-spin" style="font-size: 3rem; color: #555; margin-bottom: 10px;"></i>
                                 </div>
                                 <h3>Ready to Predict</h3>
-                                <p>Adjust the indicators and click "Predict Development Index" to get human development classification & tier prediction.</p>
+                                <p>Adjust indicators and click predict to get a human development classification.</p>
                             </div>
 
                             <!-- Loading State -->
                             <div id="result-loading" class="result-placeholder hidden">
-                                <div class="spinner"></div>
                                 <h3>Calculating Index Score...</h3>
                             </div>
 
@@ -162,13 +160,12 @@
                                     </div>
                                 </div>
 
-                                <!-- Dimension Indices Breakdown -->
                                 <div class="breakdown-container">
                                     <h3>Dimension Index Estimates</h3>
                                     
                                     <div class="dimension-progress">
                                         <div class="dim-lbl">
-                                            <span><i class="fa-solid fa-heart-circle-check"></i> Health Index (Life Expectancy)</span>
+                                            <span><i class="fa-solid fa-heart-circle-check"></i> Health Index (LEI)</span>
                                             <span id="health-index-val">0.00</span>
                                         </div>
                                         <div class="progress-bar-track">
@@ -178,7 +175,7 @@
 
                                     <div class="dimension-progress">
                                         <div class="dim-lbl">
-                                            <span><i class="fa-solid fa-book-bookmark"></i> Education Index (Schooling)</span>
+                                            <span><i class="fa-solid fa-book-bookmark"></i> Education Index (EI)</span>
                                             <span id="education-index-val">0.00</span>
                                         </div>
                                         <div class="progress-bar-track">
@@ -188,7 +185,7 @@
 
                                     <div class="dimension-progress">
                                         <div class="dim-lbl">
-                                            <span><i class="fa-solid fa-sack-dollar"></i> Income Index (GNI per Capita)</span>
+                                            <span><i class="fa-solid fa-sack-dollar"></i> Income Index (II)</span>
                                             <span id="income-index-val">0.00</span>
                                         </div>
                                         <div class="progress-bar-track">
@@ -196,10 +193,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <p class="result-explanation" id="result-text-summary">
-                                    A country achieves a higher HDI when its population enjoys a longer lifespan, better educational attainment, and higher income.
-                                </p>
                             </div>
                         </div>
                     </div>
@@ -209,51 +202,37 @@
                 <section id="tab-analytics" class="tab-panel">
                     <div class="insights-grid">
                         <div class="glass-card full-width">
-                            <h2><i class="fa-solid fa-magnifying-glass-chart icon-accent"></i> Exploratory Data Analysis (EDA)</h2>
-                            <p>Visualizing relationships between dimensions of health, education, standard of living and the composite index.</p>
+                            <h2><i class="fa-solid fa-magnifying-glass-chart icon-accent"></i> Exploratory Data Analysis</h2>
+                            <p>Visualizing relationships between dimensions of health, education, and the composite index.</p>
                         </div>
-
-                        <!-- Visual Card 1: Heatmap -->
-                        <div class="glass-card plot-card">
-                            <h3><i class="fa-solid fa-fire-flame-curved text-danger"></i> Indicator Correlation Matrix</h3>
-                            <div class="plot-img-container">
-                                <img src="{{ url_for('static', filename='plots/heatmap.png') }}" alt="Correlation Heatmap of HDI Indicators" class="plot-img" onerror="this.src='https://placehold.co/600x400/222/ddd?text=Run+train.py+to+generate+plots'">
+                        <div class="grid-layout">
+                            <!-- Heatmap -->
+                            <div class="glass-card plot-card">
+                                <h3><i class="fa-solid fa-fire-flame-curved text-danger"></i> Indicator Correlation</h3>
+                                <div class="plot-img-container">
+                                    <img src="{{ url_for('static', filename='plots/heatmap.png') }}" alt="Correlation Heatmap" class="plot-img">
+                                </div>
                             </div>
-                            <div class="plot-description">
-                                <p><strong>Insight:</strong> All three dimensions (health, education, and income) have extremely strong positive correlations with the final HDI score ($r > 0.90$). Education metrics display high multi-collinearity.</p>
+                            <!-- Distribution -->
+                            <div class="glass-card plot-card">
+                                <h3><i class="fa-solid fa-chart-area text-info"></i> Global HDI Distribution</h3>
+                                <div class="plot-img-container">
+                                    <img src="{{ url_for('static', filename='plots/dist_plot.png') }}" alt="HDI Score Distribution" class="plot-img">
+                                </div>
                             </div>
-                        </div>
-
-                        <!-- Visual Card 2: Distribution -->
-                        <div class="glass-card plot-card">
-                            <h3><i class="fa-solid fa-chart-area text-info"></i> Global HDI Distribution</h3>
-                            <div class="plot-img-container">
-                                <img src="{{ url_for('static', filename='plots/dist_plot.png') }}" alt="HDI Score Distribution Histogram" class="plot-img" onerror="this.src='https://placehold.co/600x400/222/ddd?text=Run+train.py+to+generate+plots'">
+                            <!-- Strip Plot -->
+                            <div class="glass-card plot-card">
+                                <h3><i class="fa-solid fa-list-ol text-success"></i> Development Tiers</h3>
+                                <div class="plot-img-container">
+                                    <img src="{{ url_for('static', filename='plots/strip_plot.png') }}" alt="Strip plot" class="plot-img">
+                                </div>
                             </div>
-                            <div class="plot-description">
-                                <p><strong>Insight:</strong> The global distribution is slightly left-skewed, showing a high concentration of countries in the high and very high tiers, alongside a significant tail representing nations requiring development assistance.</p>
-                            </div>
-                        </div>
-
-                        <!-- Visual Card 3: Strip Plot -->
-                        <div class="glass-card plot-card">
-                            <h3><i class="fa-solid fa-list-ol text-success"></i> Development Tiers Strip Plot</h3>
-                            <div class="plot-img-container">
-                                <img src="{{ url_for('static', filename='plots/strip_plot.png') }}" alt="Strip plot of HDI distribution by Development Tier" class="plot-img" onerror="this.src='https://placehold.co/600x400/222/ddd?text=Run+train.py+to+generate+plots'">
-                            </div>
-                            <div class="plot-description">
-                                <p><strong>Insight:</strong> Highlights clear boundaries between UNDP categorizations. Highly developed nations pack tightly at the top ($0.800+$), while emerging economies show wider variance.</p>
-                            </div>
-                        </div>
-
-                        <!-- Visual Card 4: Scatter Plots -->
-                        <div class="glass-card plot-card">
-                            <h3><i class="fa-solid fa-chart-scatter text-warning"></i> Dimensions vs. Composite Score</h3>
-                            <div class="plot-img-container">
-                                <img src="{{ url_for('static', filename='plots/scatter_plots.png') }}" alt="Scatter plots of indicators vs HDI score" class="plot-img" onerror="this.src='https://placehold.co/600x400/222/ddd?text=Run+train.py+to+generate+plots'">
-                            </div>
-                            <div class="plot-description">
-                                <p><strong>Insight:</strong> Demonstrates the strong linear relationships of Life Expectancy, Expected Schooling, and Mean Schooling with HDI. Gross National Income is plotted on a logarithmic scale, illustrating that income provides diminishing development returns at extreme heights.</p>
+                            <!-- Scatter Plots -->
+                            <div class="glass-card plot-card">
+                                <h3><i class="fa-solid fa-chart-scatter text-warning"></i> Dimensions vs. Composite</h3>
+                                <div class="plot-img-container">
+                                    <img src="{{ url_for('static', filename='plots/scatter_plots.png') }}" alt="Scatter plots" class="plot-img">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -261,63 +240,11 @@
 
                 <!-- 3. METHODOLOGY TAB -->
                 <section id="tab-methodology" class="tab-panel">
-                    <div class="methodology-wrapper glass-card">
+                    <div class="glass-card">
                         <h2><i class="fa-solid fa-circle-info icon-accent"></i> Analytical Methodology</h2>
-                        
-                        <div class="info-block">
-                            <h3>How is the Official HDI Calculated?</h3>
-                            <p>The HDI is a geometric mean of normalized indices for each of the three dimensions:</p>
-                            <div class="formula-container">
-                                <p class="formula-title">Dimension Indices</p>
-                                <p><strong>1. Health Index (LEI):</strong> \(\text{LEI} = \frac{\text{Life Expectancy} - 20}{85 - 20}\)</p>
-                                <p><strong>2. Education Index (EI):</strong> \(\text{EI} = \frac{\text{Expected Schooling Index} + \text{Mean Schooling Index}}{2}\)</p>
-                                <ul>
-                                    <li>\(\text{Expected Schooling Index (EYSI)} = \frac{\text{EYS}}{18}\)</li>
-                                    <li>\(\text{Mean Schooling Index (MYSI)} = \frac{\text{MYS}}{15}\)</li>
-                                </ul>
-                                <p><strong>3. Income Index (II):</strong> \(\text{II} = \frac{\ln(\text{GNI per capita}) - \ln(100)}{\ln(75,000) - \ln(100)}\)</p>
-                                <p class="formula-title">Composite Index</p>
-                                <p class="formula-box">\(HDI = \sqrt[3]{\text{LEI} \times \text{EI} \times \text{II}}\)</p>
-                            </div>
-                        </div>
-
-                        <div class="info-block">
+                        <div class="info-block" style="margin-top: 20px;">
                             <h3>Machine Learning Model Specs</h3>
-                            <p>Our application leverages a <strong>Linear Regression</strong> model trained on socioeconomic inputs to approximate the composite scoring. By fitting the model on global data, it learns the coefficients representing how changes in health, education, and income contribute to human development ratings.</p>
-                            
-                            <div class="table-container">
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Feature Indicator</th>
-                                            <th>Importance Coefficient</th>
-                                            <th>Interpretation</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Mean Years of Schooling</td>
-                                            <td>0.01766</td>
-                                            <td>Reflects current educational achievement of the adult population.</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Expected Years of Schooling</td>
-                                            <td>0.01397</td>
-                                            <td>Reflects educational access and expectation for the younger generation.</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Life Expectancy</td>
-                                            <td>0.00725</td>
-                                            <td>Measures longevity, healthcare infrastructure, and public health conditions.</td>
-                                        </tr>
-                                        <tr>
-                                            <td>GNI per Capita</td>
-                                            <td>0.000001</td>
-                                            <td>Measures standard of living. Note that this feature is heavily weighted by scale, hence standard regression coefficients appear smaller, yet GNI contributes significantly to the final classification.</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                            <p>This application leverages a Multiple Linear Regression model trained on socioeconomic inputs to approximate the composite scoring of the HDI.</p>
                         </div>
                     </div>
                 </section>
